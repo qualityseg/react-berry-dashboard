@@ -10,62 +10,32 @@ import MainCard from './../../../ui-component/cards/MainCard';
 import TotalIncomeCard from './../../../ui-component/cards/Skeleton/TotalIncomeCard';
 
 // assets
-import TableChartOutlinedIcon from '@material-ui/icons/TableChartOutlined';
+import UserImage from './../../../assets/images/usuario.png';
 
 // style constant
 const useStyles = makeStyles((theme) => ({
-    card: {
-        backgroundColor: theme.palette.primary.dark,
-        color: theme.palette.primary.light,
-        overflow: 'hidden',
-        position: 'relative',
-        '&:after': {
-            content: '""',
-            position: 'absolute',
-            width: '210px',
-            height: '210px',
-            background: 'linear-gradient(210.04deg, ' + theme.palette.primary[200] + ' -50.94%, rgba(144, 202, 249, 0) 83.49%)',
-            borderRadius: '50%',
-            top: '-30px',
-            right: '-180px'
-        },
-        '&:before': {
-            content: '""',
-            position: 'absolute',
-            width: '210px',
-            height: '210px',
-            background: 'linear-gradient(140.9deg, ' + theme.palette.primary[200] + ' -14.02%, rgba(144, 202, 249, 0) 77.58%)',
-            borderRadius: '50%',
-            top: '-160px',
-            right: '-130px'
-        }
-    },
-    content: {
-        padding: '16px !important'
-    },
+    // ... the rest of your styles
     avatar: {
         ...theme.typography.commonAvatar,
         ...theme.typography.largeAvatar,
-        backgroundColor: theme.palette.primary[800],
+        backgroundColor: '#1B7046',
         color: '#fff'
     },
-    primary: {
-        color: '#fff'
-    },
-    secondary: {
-        color: theme.palette.primary.light,
-        marginTop: '5px'
-    },
-    padding: {
-        paddingTop: 0,
-        paddingBottom: 0
+    avatarImg: {
+        height: '100%',
+        width: 'auto',
+        objectFit: 'contain',
     }
+    // ... the rest of your styles
 }));
 
 //-----------------------|| DASHBOARD - TOTAL INCOME DARK CARD ||-----------------------//
 
 const TotalIncomeDarkCard = ({ isLoading }) => {
     const classes = useStyles();
+
+    // Este é apenas um placeholder, você deve substituí-lo com o valor real obtido do backend.
+    const totalUsers = 123; 
 
     return (
         <React.Fragment>
@@ -77,7 +47,7 @@ const TotalIncomeDarkCard = ({ isLoading }) => {
                         <ListItem alignItems="center" disableGutters className={classes.padding}>
                             <ListItemAvatar>
                                 <Avatar variant="rounded" className={classes.avatar}>
-                                    <TableChartOutlinedIcon fontSize="inherit" />
+                                    <img src={UserImage} alt="Usuário" className={classes.avatarImg} />
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText
@@ -88,13 +58,18 @@ const TotalIncomeDarkCard = ({ isLoading }) => {
                                 }}
                                 primary={
                                     <Typography variant="h4" className={classes.primary}>
-                                        $203k
+                                        Usuários Cadastrados
                                     </Typography>
                                 }
                                 secondary={
-                                    <Typography variant="subtitle2" className={classes.secondary}>
-                                        Total Income
-                                    </Typography>
+                                    <>
+                                        <Typography variant="subtitle2" className={classes.secondary}>
+                                            Total de Usuários Cadastrados
+                                        </Typography>
+                                        <Typography variant="subtitle1" className={classes.secondary}>
+                                            {totalUsers} usuários
+                                        </Typography>
+                                    </>
                                 }
                             />
                         </ListItem>

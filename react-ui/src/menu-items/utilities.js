@@ -1,68 +1,97 @@
 // assets
-import { IconBrandFramer, IconTypography, IconPalette, IconShadow, IconWindmill, IconLayoutGridAdd } from '@tabler/icons';
+import { IconUserPlus } from '@tabler/icons';
 
 // constant
 const icons = {
-    IconTypography: IconTypography,
-    IconPalette: IconPalette,
-    IconShadow: IconShadow,
-    IconWindmill: IconWindmill,
-    IconBrandFramer: IconBrandFramer,
-    IconLayoutGridAdd: IconLayoutGridAdd
+  IconUserPlus: IconUserPlus,
 };
 
 //-----------------------|| UTILITIES MENU ITEMS ||-----------------------//
 
 export const utilities = {
-    id: 'utilities',
-    title: 'Utilities',
-    type: 'group',
-    children: [
+  id: 'Menu e Serviços',
+  title: 'Menu e Serviços',
+  type: 'group',
+  children: [
+    {
+      id: 'Usuarios',
+      title: 'Usuários',
+      type: 'collapse',
+      icon: icons['IconUsers'],
+      children: [
         {
-            id: 'util-typography',
-            title: 'Typography',
-            type: 'item',
-            url: '/utils/util-typography',
-            icon: icons['IconTypography'],
-            breadcrumbs: false
+          id: 'todos-usuarios',
+          title: 'Todos os Usuários',
+          type: 'item',
+          url: '/usuarios/todos',
+          breadcrumbs: false
         },
         {
-            id: 'util-color',
-            title: 'Color',
-            type: 'item',
-            url: '/utils/util-color',
-            icon: icons['IconPalette'],
-            breadcrumbs: false
+          id: 'administradores',
+          title: 'Administradores',
+          type: 'item',
+          url: '/usuarios/administradores',
+          breadcrumbs: false
         },
         {
-            id: 'util-shadow',
-            title: 'Shadow',
-            type: 'item',
-            url: '/utils/util-shadow',
-            icon: icons['IconShadow'],
-            breadcrumbs: false
+          id: 'medicos',
+          title: 'Médicos',
+          type: 'item',
+          url: '/usuarios/medicos',
+          breadcrumbs: false
         },
         {
-            id: 'icons',
-            title: 'Icons',
-            type: 'collapse',
-            icon: icons['IconWindmill'],
-            children: [
-                {
-                    id: 'tabler-icons',
-                    title: 'Tabler Icons',
-                    type: 'item',
-                    url: '/icons/tabler-icons',
-                    breadcrumbs: false
-                },
-                {
-                    id: 'material-icons',
-                    title: 'Material Icons',
-                    type: 'item',
-                    url: '/icons/material-icons',
-                    breadcrumbs: false
-                }
-            ]
+          id: 'usuarios-registrados',
+          title: 'Usuários Registrados',
+          type: 'item',
+          url: '/usuarios/registrados',
+          breadcrumbs: false
+        },
+        {
+          id: 'usuarios-instanciados',
+          title: 'Usuários Instanciados',
+          type: 'item',
+          url: '/usuarios/instanciados',
+          breadcrumbs: false
+        },
+        {
+          id: 'novo-usuario',
+          title: 'Novo Usuário',
+          type: 'item',
+          url: '/usuarios/novo',
+          breadcrumbs: false
         }
-    ]
+      ]
+    },
+    {
+      id: 'Instituicoes',
+      title: 'Instituições',
+      type: 'collapse',
+      icon: icons['IconBriefcase'],
+      children: [
+        {
+          id: 'minhas-instituicoes',
+          title: 'Minhas Instituições',
+          type: 'item',
+          url: '/instituicoes/minhas',
+          breadcrumbs: false
+        }
+      ]
+    },
+    {
+      id: 'Programas',
+      title: 'Programas',
+      type: 'collapse',
+      icon: icons['IconLayers'],
+      children: [
+        {
+          id: 'todos-programas',
+          title: 'Todos os Programas',
+          type: 'item',
+          url: '/programas/todos',
+          breadcrumbs: false
+        }
+      ]
+    }
+  ]
 };

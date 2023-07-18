@@ -170,7 +170,7 @@ const RestLogin = (props, { ...others }) => {
                         </FormControl>
 
                         <FormControl fullWidth error={Boolean(touched.password && errors.password)} className={classes.loginInput}>
-                            <InputLabel htmlFor="outlined-adornment-password-login">Password</InputLabel>
+                            <InputLabel htmlFor="outlined-adornment-password-login">Senha</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-password-login"
                                 type={showPassword ? 'text' : 'password'}
@@ -190,7 +190,7 @@ const RestLogin = (props, { ...others }) => {
                                         </IconButton>
                                     </InputAdornment>
                                 }
-                                label="Password"
+                                label="Senha"
                                 inputProps={{
                                     classes: {
                                         notchedOutline: classes.notchedOutline
@@ -214,7 +214,7 @@ const RestLogin = (props, { ...others }) => {
                                         color="primary"
                                     />
                                 }
-                                label="Remember me"
+                                label="Salvar acesso"
                             />
                             <Typography
                                 variant="subtitle1"
@@ -223,7 +223,7 @@ const RestLogin = (props, { ...others }) => {
                                 color="secondary"
                                 sx={{ textDecoration: 'none' }}
                             >
-                                Forgot Password?
+                                Esqueceu a senha?
                             </Typography>
                         </Stack>
                         {errors.submit && (
@@ -251,7 +251,7 @@ const RestLogin = (props, { ...others }) => {
                                     variant="contained"
                                     color="secondary"
                                 >
-                                    Sign IN
+                                    Entre
                                 </Button>
                             </AnimateButton>
                         </Box>

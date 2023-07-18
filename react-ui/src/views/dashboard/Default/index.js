@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import { Switch, Route } from 'react-router-dom';
 
 // material-ui
 import { Grid } from '@material-ui/core';
 
 // project imports
-import EarningCard from './EarningCard';
-import PopularCard from './PopularCard';
-import TotalOrderLineChartCard from './TotalOrderLineChartCard';
-import TotalIncomeDarkCard from './TotalIncomeDarkCard';
-import TotalIncomeLightCard from './TotalIncomeLightCard';
-import TotalGrowthBarChart from './TotalGrowthBarChart';
-import { gridSpacing } from './../../../store/constant';
+import AvaliacoesRealizadasHoje from './AvaliacoesRealizadasHoje';
+import AvaliacoesRealizadasMomento from './AvaliacoesRealizadasMomento';
+import UsuariosCadastrados from './UsuariosCadastrados';
+import DispositivosUtilizadosCard from './DispositivosUtilizadosCard';
+import BrowsersUtilizadosCard from './BrowsersUtilizadosCard';
+import NovoUsuarioPage from '../../NovosUsuarios/NovoUsuarioPage';
 
-//-----------------------|| DEFAULT DASHBOARD ||-----------------------//
+
+import { gridSpacing } from './../../../store/constant';
 
 const Dashboard = () => {
     const [isLoading, setLoading] = useState(true);
@@ -23,34 +24,28 @@ const Dashboard = () => {
     return (
         <Grid container spacing={gridSpacing}>
             <Grid item xs={12}>
-                <Grid container spacing={gridSpacing}>
-                    <Grid item lg={4} md={6} sm={6} xs={12}>
-                        <EarningCard isLoading={isLoading} />
-                    </Grid>
-                    <Grid item lg={4} md={6} sm={6} xs={12}>
-                        <TotalOrderLineChartCard isLoading={isLoading} />
-                    </Grid>
-                    <Grid item lg={4} md={12} sm={12} xs={12}>
+                <Switch>
+                    <Route path="/usuarios/novo" component={NovoUsuarioPage} />
+                    <Route path="/">
                         <Grid container spacing={gridSpacing}>
-                            <Grid item sm={6} xs={12} md={6} lg={12}>
-                                <TotalIncomeDarkCard isLoading={isLoading} />
+                            <Grid item lg={4} md={4} sm={12} xs={12}>
+                                <UsuariosCadastrados isLoading={isLoading} />
                             </Grid>
-                            <Grid item sm={6} xs={12} md={6} lg={12}>
-                                <TotalIncomeLightCard isLoading={isLoading} />
+                            <Grid item lg={4} md={4} sm={12} xs={12}>
+                                <AvaliacoesRealizadasMomento isLoading={isLoading} />
+                            </Grid>
+                            <Grid item lg={4} md={4} sm={12} xs={12}>
+                                <AvaliacoesRealizadasHoje isLoading={isLoading} />
+                            </Grid>
+                            <Grid item lg={6} md={6} sm={12} xs={12}>
+                                <DispositivosUtilizadosCard />
+                            </Grid>
+                            <Grid item lg={6} md={6} sm={12} xs={12}>
+                                <BrowsersUtilizadosCard />
                             </Grid>
                         </Grid>
-                    </Grid>
-                </Grid>
-            </Grid>
-            <Grid item xs={12}>
-                <Grid container spacing={gridSpacing}>
-                    <Grid item xs={12} md={8}>
-                        <TotalGrowthBarChart isLoading={isLoading} />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                        <PopularCard isLoading={isLoading} />
-                    </Grid>
-                </Grid>
+                    </Route>
+                </Switch>
             </Grid>
         </Grid>
     );

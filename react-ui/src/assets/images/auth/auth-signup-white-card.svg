@@ -27,10 +27,10 @@
 </filter>
 <linearGradient id="paint0_linear" x1="333.319" y1="70.4552" x2="79.0046" y2="167.537" gradientUnits="userSpaceOnUse">
 <stop stop-color="#FBFBFB"/>
-<stop offset="1" stop-color="#E3F2FD"/>
+<stop offset="1" stop-color="#7FB8BD"/>
 </linearGradient>
 <linearGradient id="paint1_linear" x1="-125.22" y1="-116.149" x2="93.9059" y2="181.541" gradientUnits="userSpaceOnUse">
-<stop stop-color="#E3F2FD"/>
+<stop stop-color="#7FB8BD"/>
 <stop offset="1" stop-color="white" stop-opacity="0"/>
 </linearGradient>
 <clipPath id="clip0">

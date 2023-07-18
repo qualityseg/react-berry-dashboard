@@ -158,7 +158,7 @@ const RestRegister = ({ ...others }) => {
                             <Grid item xs={12}>
                                 <TextField
                                     fullWidth
-                                    label="Username"
+                                    label="Usuário"
                                     margin="normal"
                                     name="username"
                                     id="username"
@@ -200,7 +200,7 @@ const RestRegister = ({ ...others }) => {
                         </FormControl>
 
                         <FormControl fullWidth error={Boolean(touched.password && errors.password)} className={classes.loginInput}>
-                            <InputLabel htmlFor="outlined-adornment-password-register">Password</InputLabel>
+                            <InputLabel htmlFor="outlined-adornment-password-register">Senha</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-password-register"
                                 type={showPassword ? 'text' : 'password'}
@@ -278,9 +278,9 @@ const RestRegister = ({ ...others }) => {
                                     }
                                     label={
                                         <Typography variant="subtitle1">
-                                            Agree with &nbsp;
+                                            Aceito os &nbsp;
                                             <Typography variant="subtitle1" component={Link} to="#">
-                                                Terms & Condition.
+                                                Termos e Condições.
                                             </Typography>
                                         </Typography>
                                     }
@@ -312,7 +312,7 @@ const RestRegister = ({ ...others }) => {
                                     variant="contained"
                                     color="secondary"
                                 >
-                                    Sign UP
+                                    Registrar
                                 </Button>
                             </AnimateButton>
                         </Box>

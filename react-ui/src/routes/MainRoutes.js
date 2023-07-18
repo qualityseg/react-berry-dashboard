@@ -5,6 +5,7 @@ import { Route, Switch, useLocation } from 'react-router-dom';
 import MainLayout from './../layout/MainLayout';
 import Loadable from '../ui-component/Loadable';
 import AuthGuard from './../utils/route-guard/AuthGuard';
+import NovoUsuarioPage from '../views/NovosUsuarios/NovoUsuarioPage'; // Importando NovoUsuarioPage
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('../views/dashboard/Default')));
@@ -35,7 +36,9 @@ const MainRoutes = () => {
                 '/icons/tabler-icons',
                 '/icons/material-icons',
 
-                '/sample-page'
+                '/sample-page',
+
+                '/usuarios/novo'
             ]}
         >
             <MainLayout>
@@ -50,6 +53,8 @@ const MainRoutes = () => {
                         <Route path="/icons/material-icons" component={UtilsMaterialIcons} />
 
                         <Route path="/sample-page" component={SamplePage} />
+
+                        <Route path="/usuarios/novo" component={NovoUsuarioPage} />
                     </AuthGuard>
                 </Switch>
             </MainLayout>

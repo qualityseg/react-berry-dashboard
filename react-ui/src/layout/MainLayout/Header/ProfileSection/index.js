@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import configData from '../../../../config';
 
@@ -24,6 +24,7 @@ import {
 } from '@material-ui/core';
 import ListItemButton from '@material-ui/core/ListItemButton';
 
+
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import axios from 'axios';
@@ -31,7 +32,7 @@ import axios from 'axios';
 // project imports
 import MainCard from '../../../../ui-component/cards/MainCard';
 import Transitions from '../../../../ui-component/extended/Transitions';
-import UpgradePlanCard from './UpgradePlanCard';
+
 import { LOGOUT } from './../../../../store/actions';
 
 // assets
@@ -116,21 +117,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 //-----------------------|| PROFILE MENU ||-----------------------//
-
 const ProfileSection = () => {
     const classes = useStyles();
     const theme = useTheme();
     const customization = useSelector((state) => state.customization);
     const account = useSelector((state) => state.account);
     const dispatcher = useDispatch();
-
+  
     const [sdm, setSdm] = React.useState(true);
     const [value, setValue] = React.useState('');
     const [notification, setNotification] = React.useState(false);
     const [selectedIndex, setSelectedIndex] = React.useState(1);
-
+  
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
+
     const handleLogout = () => {
         console.log(account.token);
         axios
@@ -166,6 +167,22 @@ const ProfileSection = () => {
 
         prevOpen.current = open;
     }, [open]);
+
+    const [timeOfDay, setTimeOfDay] = useState('');
+
+    useEffect(() => {
+        const currentHour = new Date().getHours();
+        if (currentHour >= 6 && currentHour < 12) {
+            setTimeOfDay('Bom dia');
+        } else if (currentHour >= 12 && currentHour < 18) {
+            setTimeOfDay('Boa tarde');
+        } else {
+            setTimeOfDay('Boa noite');
+        }
+    }, []);
+
+
+
     return (
         <React.Fragment>
             <Chip
@@ -215,13 +232,13 @@ const ProfileSection = () => {
                                     <CardContent className={classes.cardContent}>
                                         <Grid container direction="column" spacing={0}>
                                             <Grid item className={classes.flex}>
-                                                <Typography variant="h4">Good Morning,</Typography>
-                                                <Typography component="span" variant="h4" className={classes.name}>
-                                                    John
+                                                <Typography variant="h4">{timeOfDay},</Typography>
+                                                <Typography variant="h4">
+                                                {account.user ? account.user.name : ''}
                                                 </Typography>
                                             </Grid>
                                             <Grid item>
-                                                <Typography variant="subtitle2">Project Admin</Typography>
+                                                <Typography variant="subtitle2">Admin do Projeto</Typography>
                                             </Grid>
                                         </Grid>
                                         <OutlinedInput
@@ -242,7 +259,7 @@ const ProfileSection = () => {
                                         />
                                         <Divider />
                                         <PerfectScrollbar className={classes.ScrollHeight}>
-                                            <UpgradePlanCard />
+                                            
                                             <Divider />
                                             <Card className={classes.card}>
                                                 <CardContent>
@@ -250,7 +267,7 @@ const ProfileSection = () => {
                                                         <Grid item>
                                                             <Grid item container alignItems="center" justifyContent="space-between">
                                                                 <Grid item>
-                                                                    <Typography variant="subtitle1">Start DND Mode</Typography>
+                                                                    <Typography variant="subtitle1">Modo DND (Não Perturbe)</Typography>
                                                                 </Grid>
                                                                 <Grid item>
                                                                     <Switch
@@ -266,7 +283,7 @@ const ProfileSection = () => {
                                                         <Grid item>
                                                             <Grid item container alignItems="center" justifyContent="space-between">
                                                                 <Grid item>
-                                                                    <Typography variant="subtitle1">Allow Notifications</Typography>
+                                                                    <Typography variant="subtitle1">Permitir Notificações</Typography>
                                                                 </Grid>
                                                                 <Grid item>
                                                                     <Switch
@@ -292,7 +309,7 @@ const ProfileSection = () => {
                                                     <ListItemIcon>
                                                         <IconLogout stroke={1.5} size="1.3rem" />
                                                     </ListItemIcon>
-                                                    <ListItemText primary={<Typography variant="body2">Logout</Typography>} />
+                                                    <ListItemText primary={<Typography variant="body2">Deslogar</Typography>} />
                                                 </ListItemButton>
                                             </List>
                                         </PerfectScrollbar>
