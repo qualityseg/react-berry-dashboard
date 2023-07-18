@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 Copyright (c) 2019 - present AppSeed.us
 
 */
+import { db } from '../server/database';
 import express from 'express';
 import Joi from 'joi';
 import jwt from 'jsonwebtoken';
@@ -12,6 +13,8 @@ import { checkToken } from '../config/safeRoutes';
 import ActiveSession from '../models/activeSession';
 import User from '../models/user';
 import { connection } from '../server/database';
+
+
 
 // eslint-disable-next-line new-cap
 const router = express.Router();
@@ -23,6 +26,66 @@ const userSchema = Joi.object().keys({
     .optional(),
   password: Joi.string().required(),
 });
+
+router.post('/new', async (req, res) => {
+
+  const { 
+    name, surname, birthDate, email, gender, 
+    phone, phone2, cpf, cnpj, registration, obs,
+    address, number, complement, district, city,
+    state, country, zipCode, unit, sector, role,
+    institution
+  } = req.body;
+
+  const connection = db.getConnection();
+
+  if (!connection) {
+    return res.status(500).send("Erro na conexão com o BD");
+  }
+
+  const userRepository = connection.getRepository(User);
+
+  if (!userRepository) {
+    return res.status(500).send("Erro ao obter repositório"); 
+  }
+
+  try {
+    await userRepository.save({
+      name,
+      surname,
+      birthDate,
+      email,
+      gender,
+      phone,
+      phone2,
+      cpf,    
+      cnpj,
+      registration,
+      obs,
+      address,
+      number,
+      complement,
+      district,
+      city,
+      state,
+      country,
+      zipCode,
+      unit,  
+      sector,
+      role,
+      institution
+    });
+
+    res.status(201).send("Usuário salvo com sucesso!");
+
+  } catch (error) {
+    
+    res.status(500).send("Erro ao salvar usuário");
+  
+  }
+
+});
+
 
 router.post('/register', (req, res) => {
   // Joy Validation

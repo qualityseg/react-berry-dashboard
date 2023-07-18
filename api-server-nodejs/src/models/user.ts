@@ -1,19 +1,77 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
 @Entity()
-export default class User {
-  @PrimaryGeneratedColumn('uuid')
-  id!: string;
+export class User {
 
-  @Column({ type: 'text', nullable: false })
-  username!: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @Column({ type: 'text', nullable: false })
-  email!: string;
+  @Column()
+  name: string;
 
-  @Column({ type: 'text', nullable: false })
-  password!: string;
+  @Column()
+  surname: string;
 
-  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
-  date?: string;
+  @Column()
+  email: string;
+
+  @Column()
+  birthDate: Date;
+
+  @Column()
+  gender: string;
+
+  @Column()
+  phone: string;
+
+  @Column()
+  phone2: string;
+
+  @Column()
+  cpf: string;
+
+  @Column()
+  cnpj: string;
+
+  @Column()
+  registration: string;
+
+  @Column()
+  obs: string;
+
+  @Column()
+  address: string;
+
+  @Column()
+  number: string;
+
+  @Column()
+  complement: string;
+
+  @Column()
+  district: string;
+
+  @Column()
+  city: string;
+
+  @Column()
+  state: string;
+
+  @Column() 
+  country: string;
+
+  @Column()
+  zipCode: string;
+
+  @Column()
+  unit: string;
+
+  @Column()
+  sector: string;
+
+  @Column()
+  role: string;
+
+  @Column()
+  institution: string;
+  
 }

@@ -16,17 +16,21 @@ const options: ConnectionOptions = {
   logging: true,
 };
 
-export let connection : Connection | undefined;
-
-export const connect = async (): Promise<Connection | undefined> => {
-  try {
-    const conn = await createConnection(options);
-    connection = conn;
-    console.log(`Database connection success. Connection name: '${conn.name}' Database: '${conn.options.database}'`);
-  } catch (err) {
-    console.log(err);
-  }
-  return undefined;
+export const db = {
+  getConnection: () => connection
 };
+
+export let connection: Connection;
+
+export const connect = async (): Promise<Connection> => {
+  try {
+    connection = await createConnection(options);
+    console.log("Conectado ao banco de dados");
+  } catch (error) {
+    console.error(error);
+  }
+
+  return connection;
+}
 
 export const PrepareDB = () => new sqlite3.Database(':memory:');

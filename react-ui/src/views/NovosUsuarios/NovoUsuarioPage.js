@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import api from './api'; 
 import {
   Typography,
   TextField,
@@ -69,11 +70,49 @@ const NovoUsuarioPage = () => {
   }, [pais]);
 
   // Função para lidar com a submissão do formulário
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Lógica para salvar dados no banco de dados aqui
-  }
+  function handleSubmit(event) {
 
+    event.preventDefault();
+  
+    const data = new FormData(event.target);
+  
+    const userData = {
+      name: data.get('nome'), 
+      surname: data.get('sobrenome'),
+      birthDate: data.get('data de nascimento'), 
+      email: data.get('email'),
+      gender: data.get('sexo'),
+      phone: data.get('telefone pessoal'),
+      phone2: data.get('telefone adicional'),
+      cpf: data.get('cpf'),
+      cnpj: data.get('cnpj'),
+      registration: data.get('matricula'),
+      obs: data.get('observacoes'),
+      address: data.get('endereco'),
+      number: data.get('numero'),
+      complement: data.get('complemento'),
+      district: data.get('bairro'),
+      city: data.get('cidade'),
+      state: data.get('estado'),
+      country: data.get('pais'),
+      zipCode: data.get('cep'),
+      unit: data.get('unidade'),
+      sector: data.get('setor'),
+      role: data.get('cargo'),
+      institution: data.get('instituicao'),
+
+      
+    };
+  
+    api.post('http://localhost:5000/users/new', userData)
+      .then(response => {
+        console.log('Saved user', response);
+      })
+      .catch(error => {
+        console.log('Error saving user', error);
+      });
+  
+  }
   return (
     <Container maxWidth="sm">
       <form onSubmit={handleSubmit}>
