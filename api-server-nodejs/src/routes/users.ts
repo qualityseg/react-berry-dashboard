@@ -27,7 +27,7 @@ const userSchema = Joi.object().keys({
   password: Joi.string().required(),
 });
 
-router.post('/new', async (req, res) => {
+router.post('/new', (req, res) => {
 
   const { 
     name, surname, birthDate, email, gender, 
@@ -76,7 +76,7 @@ router.post('/new', async (req, res) => {
       institution
     });
 
-    res.status(201).send("Usuário salvo com sucesso!");
+    res.status(201).json({message: 'Usuario cadastrado!'});
 
   } catch (error) {
     
@@ -87,7 +87,7 @@ router.post('/new', async (req, res) => {
 });
 
 
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
   // Joy Validation
   const result = userSchema.validate(req.body);
   if (result.error) {
@@ -102,26 +102,30 @@ router.post('/register', (req, res) => {
 
   const userRepository = connection!.getRepository(User);
 
-  userRepository.findOne({ email }).then((user) => {
-    if (user) {
-      res.json({ success: false, msg: 'Email already exists' });
-    } else {
-      bcrypt.genSalt(10, (_err, salt) => {
-        bcrypt.hash(password, salt).then((hash) => {
-          const query = {
-            username,
-            email,
-            password: hash,
-          };
+  // Verificando se o email já existe
+  const userExists = await userRepository.findOne({ email });
+  
+  if (userExists) {
+    res.json({ success: false, msg: 'Email already exists' });
+    return;
+  }
 
-          userRepository.save(query).then((u) => {
-            res.json({ success: true, userID: u.id, msg: 'The user was successfully registered' });
-          });
-        });
+  // Hashing the password
+  bcrypt.genSalt(10, (_err, salt) => {
+    bcrypt.hash(password, salt).then((hash) => {
+      const query = {
+        username,
+        email,
+        password: hash,
+      };
+
+      userRepository.save(query).then((u) => {
+        res.json({ success: true, userID: u.id, msg: 'The user was successfully registered' });
       });
-    }
+    });
   });
 });
+
 
 router.post('/login', (req, res) => {
   // Joy Validation

@@ -10,10 +10,15 @@ if (!process.env.SQLITE_PATH) {
 }
 
 const options: ConnectionOptions = {
-  type: 'sqlite',
-  database: process.env.SQLITE_PATH,
-  entities: [User, ActiveSession],
-  logging: true,
+  type: 'mysql',
+  host: process.env.DB_HOST,
+  port: 3306,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  entities: [User, ActiveSession, Login],
+  synchronize: true,
+  logging: false,
 };
 
 export const db = {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import api from './api'; 
 import {
   Typography,
@@ -52,13 +53,16 @@ const estadosBrasil = [
 const NovoUsuarioPage = () => {
   const [pais, setPais] = useState(''); // Armazena o país selecionado
   const [estado, setEstado] = useState(''); // Armazena o estado selecionado
-  const [listaPaises, setListaPaises] = useState([]); // Armazena a lista de países
-  const [listaEstados, setListaEstados] = useState([]); // Armazena a lista de estados
 
-  // Inicializa a lista de países quando o componente é montado
-  useEffect(() => {
-    setListaPaises(Object.entries(countries.getNames('pt')));
-  }, []);
+  const [listaEstados, setListaEstados] = useState([]); // Armazena a lista de estados
+  
+  // estados adicionais para lidar com os campos de endereço
+  
+  const [logradouro, setLogradouro] = useState('');
+  const [bairro, setBairro] = useState('');
+  const [cidade, setCidade] = useState('');
+  const [cep, setCep] = useState('');
+
 
   // Atualiza a lista de estados quando o país é alterado
   useEffect(() => {
@@ -68,6 +72,22 @@ const NovoUsuarioPage = () => {
       setListaEstados([]); // Limpa a lista de estados se o país selecionado não for o Brasil
     }
   }, [pais]);
+
+  // função para lidar com a mudança no campo de CEP
+  function handleCepChange(event) {
+    const cepInput = event.target.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+    setCep(event.target.value);
+    if (cepInput.length === 8) { // se o CEP tiver 8 dígitos
+      axios.get(`https://viacep.com.br/ws/${cepInput}/json/`)
+        .then((response) => {
+          const { logradouro, bairro, localidade, uf } = response.data;
+          setLogradouro(logradouro);
+          setBairro(bairro);
+          setCidade(localidade);
+          setEstado(uf);
+        });
+    }
+  }
 
   // Função para lidar com a submissão do formulário
   function handleSubmit(event) {
@@ -103,7 +123,8 @@ const NovoUsuarioPage = () => {
 
       
     };
-  
+
+    
     api.post('http://localhost:5000/users/new', userData)
       .then(response => {
         console.log('Saved user', response);
@@ -113,8 +134,13 @@ const NovoUsuarioPage = () => {
       });
   
   }
+
+  function handlePaisChange(event) {
+    setPais(event.target.value);
+  }
+
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="md">
       <form onSubmit={handleSubmit}>
       
         <Grid container spacing={2}>
@@ -126,140 +152,123 @@ const NovoUsuarioPage = () => {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <TextField label="Nome" fullWidth />
+            <TextField label="Nome" name="nome" fullWidth required />
           </Grid>
         
           <Grid item xs={12} sm={6}>
-            <TextField label="Sobrenome" fullWidth />
+            <TextField label="Sobrenome" name="sobrenome" fullWidth required />
           </Grid>
         
           <Grid item xs={12} sm={6}>
-            <TextField label="Email" fullWidth />
+            <TextField label="Email" name="email" fullWidth required />
           </Grid>
         
           <Grid item xs={12} sm={6}>  
-            <TextField label="Data Nascimento" fullWidth />
+            <TextField 
+              label="Data Nascimento" 
+              name="data de nascimento" 
+              type="date"
+              InputLabelProps={{ shrink: true }} 
+              fullWidth 
+              required 
+            />
           </Grid>
         
           <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
+            <FormControl fullWidth required>
               <InputLabel id="sexo-label">Sexo</InputLabel>
-              <Select labelId="sexo-label" id="sexo">
+              <Select labelId="sexo-label" id="sexo" name="sexo" required>
                 <MenuItem value="masculino">Masculino</MenuItem>
                 <MenuItem value="feminino">Feminino</MenuItem>
               </Select>
             </FormControl>
           </Grid>
         <Grid item xs={6}>
-          <TextField label="Telefone Pessoal" fullWidth />
+          <TextField label="Telefone Pessoal" name="telefone pessoal" fullWidth required />
         </Grid>
         <Grid item xs={6}>
-          <TextField label="Telefone Adicional" fullWidth />
+          <TextField label="Telefone Adicional" name="telefone adicional" fullWidth />
         </Grid>
       </Grid>
 
       <Typography variant="h4" style={{fontSize: '27px', fontWeight: 'bold'}}>Documentos</Typography>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <TextField label="CPF" fullWidth />
+          <TextField label="CPF" name="cpf" fullWidth required />
         </Grid>
         <Grid item xs={6}>
-          <TextField label="CNPJ" fullWidth />
+          <TextField label="CNPJ" name="cnpj" fullWidth />
         </Grid>
         <Grid item xs={6}>
-          <TextField label="Matrícula" fullWidth />
+          <TextField label="Matrícula" name="matricula" fullWidth />
         </Grid>
         <Grid item xs={6}>
-          <TextField label="Observações" fullWidth />
+          <TextField label="Observações" name="observacoes" fullWidth />
         </Grid>
       </Grid>
 
       <Typography variant="h4" style={{fontSize: '27px', fontWeight: 'bold'}}>Endereço</Typography>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <TextField label="Logradouro" value={logradouro} fullWidth />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField label="Número" fullWidth />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField label="Complemento" fullWidth />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField label="Bairro" value={bairro} fullWidth />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField label="Cidade" value={cidade} fullWidth />
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl fullWidth>
+              <InputLabel id="estado-label">Estado</InputLabel>
+              <Select labelId="estado-label" id="estado" value={estado} onChange={(event) => setEstado(event.target.value)}>
+                {estadosBrasil.map((state) => (
+                  <MenuItem key={state} value={state}>{state}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <TextField label="País" value="Brasil" disabled fullWidth />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField label="CEP" value={cep} onChange={handleCepChange} fullWidth />
+          </Grid>
+        </Grid>
+
+      <Typography variant="h4" style={{fontSize: '27px', fontWeight: 'bold'}}>Empresa</Typography>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <TextField label="Logradouro" fullWidth />
+          <TextField label="Unidade" name="unidade" fullWidth required />
         </Grid>
         <Grid item xs={6}>
-          <TextField label="Número" fullWidth />
+          <TextField label="Setor" name="setor" fullWidth required />
         </Grid>
         <Grid item xs={6}>
-          <TextField label="Complemento" fullWidth />
+          <TextField label="Cargo" name="cargo" fullWidth required />
         </Grid>
         <Grid item xs={6}>
-          <TextField label="Bairro" fullWidth />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField label="Cidade" fullWidth />
-        </Grid>
-        <Grid item xs={6}>
-          <FormControl fullWidth>
-            <InputLabel id="estado-label">Estado</InputLabel>
-            <Select labelId="estado-label" id="estado" value={estado} onChange={(event) => setEstado(event.target.value)}>
-              {listaEstados.map((state) => (
-                <MenuItem key={state} value={state}>{state}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={6}>
-          <FormControl fullWidth>
-            <InputLabel id="pais-label">País</InputLabel>
-            <Select labelId="pais-label" id="pais" value={pais} onChange={(event) => setPais(event.target.value)}>
-              {listaPaises.map((country) => (
-                <MenuItem key={country[0]} value={country[0]}>{country[1]}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={6}>
-          <TextField label="CEP" fullWidth />
+          <TextField label="Instituição" name="instituicao" fullWidth required />
         </Grid>
       </Grid>
 
-      <Typography variant="h4" style={{fontSize: '27px', fontWeight: 'bold'}}>Trabalho</Typography>
-        <Grid container spacing={2}>
+      <FormControlLabel
+        control={<Checkbox name="terms" required />}
+        label="Solicitar recuperação de acesso."
+      />
 
-          <Grid item xs={6}>
-            <TextField label="Unidade" fullWidth />
-          </Grid>
-
-          <Grid item xs={6}>
-            <TextField label="Setor" fullWidth />
-          </Grid>  
-
-          <Grid item xs={6}>
-            <TextField label="Cargo" fullWidth />
-          </Grid>
-
-          <Grid item xs={6}>
-            <TextField label="Instituição" fullWidth />
-          </Grid>
-
-        </Grid>
-
-        <Typography variant="h4" style={{fontSize: '27px', fontWeight: 'bold'}}>
-          Acesso
-        </Typography>
-
-        <Grid item xs={12}>
-          <FormControlLabel 
-            control={<Checkbox />} 
-            label="Solicitar recuperação de acesso" 
-          />
-        </Grid>
-
-        <Button 
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"  
-        >
-          Salvar
-        </Button>
-
+      <Button variant="contained" color="primary" type="submit">
+        Enviar
+      </Button>
       </form>
     </Container>
   );
-}
+};
 
 export default NovoUsuarioPage;
